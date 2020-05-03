@@ -24,4 +24,6 @@ Wir bringen zu jedem seiner Bedarf
 # Links
  
 * [MyDot Mockup](https://balsamiq.cloud/sxtv712/phyabhm)
-
+* [Landing-Page](https://www.optikfriend.de/)
+* [Test-Shop](https://optikfriend.silverlenses.com)
+* [b2bOptic Wiki](http://wiki.b2boptic.com/en:start)
