@@ -20,6 +20,22 @@ Wir bringen zu jedem seiner Bedarf
 * Auf der Website sollte auch die Möglichkeit gegeben dass der User mit der Optiker kommunizieren kann.
 * Wenn die Plattform zwischen der End User  und der Optiker fertig ist gehen wir auf die Plattform zwischen der Optiker und die Lieferanten an.
 
+### Diagram
+
+```plantuml
+start suche
+Kunde -> Google : sucht nach Brille zu Kaufen
+Google -> Kunde: Ergebnisse mit Optik Friend Seite
+end suche
+Kunde -> "Landing Page": Wählt ein Ergebniss (klick auf der Landing-Page)
+"Landing Page" -> Kunde: Listet alle Optiker, die diese Brille haben 
+"Landing Page" -> Kunde: Zeige die Karte mit alle Optikier in der Nähe
+Kunde -> "Landing Page": Wählt ein Optiker online Shop aus die Liste
+Kunde -> "Landing Page": Fühlt Bestellungsformular aus
+"Landing Page" -> "Moderator": Bekommt benachrichtung über die Bestellung
+
+
+```
 
 # Links
  
@@ -27,3 +43,4 @@ Wir bringen zu jedem seiner Bedarf
 * [Landing-Page](https://www.optikfriend.de/)
 * [Test-Shop](https://optikfriend.silverlenses.com)
 * [b2bOptic Wiki](http://wiki.b2boptic.com/en:start)
+* [MyDot Eyewear - Brillen Nürnberg](https://mydoteyewear.de/)
