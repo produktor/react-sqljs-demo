@@ -23,17 +23,16 @@ Wir bringen zu jedem seiner Bedarf
 ### Diagram
 
 ```plantuml
-start suche
+
 Kunde -> Google : sucht nach Brille zu Kaufen
 Google -> Kunde: Ergebnisse mit Optik Friend Seite
-end suche
+
 Kunde -> "Landing Page": Wählt ein Ergebniss (klick auf der Landing-Page)
 "Landing Page" -> Kunde: Listet alle Optiker, die diese Brille haben 
 "Landing Page" -> Kunde: Zeige die Karte mit alle Optikier in der Nähe
 Kunde -> "Landing Page": Wählt ein Optiker online Shop aus die Liste
 Kunde -> "Landing Page": Fühlt Bestellungsformular aus
 "Landing Page" -> "Moderator": Bekommt benachrichtung über die Bestellung
-
 
 ```
 
