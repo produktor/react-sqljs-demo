@@ -13,6 +13,7 @@ jobs:
             - run: yarn build
       - persist_to_workspace:
           paths: build
+          root: ./
   docs-deploy:
     docker:
       - image: node:8.10.0
