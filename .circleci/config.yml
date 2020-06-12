@@ -44,5 +44,5 @@ workflows:
     jobs:
       - build
       - docs-deploy:
-        requires:
-          - build
+          requires:
+            - build
