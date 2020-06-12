@@ -21,9 +21,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: build
-      - run:
-          name: Disable jekyll builds
-          command: build/.nojekyll
+#      - run:
+#          name: Disable jekyll builds
+#          command: build/.nojekyll
       # Needed for write access to the GitHub repository;
       # see https://circleci.com/docs/2.0/gh-bb-integration/#deployment-keys-and-user-keys
       - add_ssh_keys:
