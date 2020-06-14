@@ -1,12 +1,11 @@
 import React from "react";
-import axios from "axios";
 import "./styles.css";
 import initSqlJs from "sql.js";
 
 export default class App extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { db: null, err: null, results: null }
   }
 
@@ -16,14 +15,11 @@ export default class App extends React.Component {
     // see ../config-overrides.js
 
     const me = this;
-    Promise.all([initSqlJs(), axios.get('./test.db', {responseType: 'arraybuffer'})]).then(res => {
+    Promise.all([initSqlJs(), fetch('./test.db')]).then(async res => {
       const SQLite = res[0], dbStorage = res[1];
-      const db = new SQLite.Database(new Uint8Array(dbStorage.data));
-      // language=SQLite
-      // const rows = db.exec("SELECT count(*) FROM db_articles");
-      // console.log(rows);
-      me.setState({db: db});
+      const db = new SQLite.Database(new Uint8Array(await dbStorage.arrayBuffer()));
 
+      me.setState({db: db});
     }).catch(err => {
       me.setState({err});
     });
@@ -81,7 +77,8 @@ export default class App extends React.Component {
         <textarea
           onChange={e => this.exec(e.target.value)}
           placeholder="Enter some SQL. No inpiration ? Try “select sqlite_version()”"
-        >SELECT count(*) FROM db_articles</textarea>
+          defaultValue="SELECT * FROM db_articles"
+        />
 
         <pre className="error">{(err || "").toString()}</pre>
 
