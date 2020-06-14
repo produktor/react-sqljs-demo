@@ -43,3 +43,4 @@ Kunde -> "Landing Page": Fühlt Bestellungsformular aus
 * [Test-Shop](https://optikfriend.silverlenses.com)
 * [b2bOptic Wiki](http://wiki.b2boptic.com/en:start)
 * [MyDot Eyewear - Brillen Nürnberg](https://mydoteyewear.de/)
+* [Live demo](https://sqlite-js-demo.netlify.app)
