@@ -6,6 +6,7 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.query = React.createRef();
     this.state = { db: null, err: null, results: null }
   }
 
@@ -15,11 +16,16 @@ export default class App extends React.Component {
     // see ../config-overrides.js
 
     const me = this;
+
     Promise.all([initSqlJs(), fetch('./test.db')]).then(async res => {
       const SQLite = res[0], dbStorage = res[1];
       const db = new SQLite.Database(new Uint8Array(await dbStorage.arrayBuffer()));
-
       me.setState({db: db});
+
+      // document.getElementById("App")
+      const sql = me.query.current.value;
+      me.exec(sql);
+
     }).catch(err => {
       me.setState({err});
     });
@@ -78,6 +84,7 @@ export default class App extends React.Component {
           onChange={e => this.exec(e.target.value)}
           placeholder="Enter some SQL. No inpiration ? Try “select sqlite_version()”"
           defaultValue="SELECT * FROM db_articles"
+          ref={this.query}
         />
 
         <pre className="error">{(err || "").toString()}</pre>
