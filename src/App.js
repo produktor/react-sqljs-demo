@@ -1,66 +1,38 @@
 import React from "react";
 import "./styles.css";
 import initSqlJs from "sql.js";
-
-class Article {
-  internal_article_id;
-  ean_code;
-  company_id;
-  brand;
-  user_group;
-  article_type;
-  line;
-  frame_dbl;
-  frame_rim_type;
-  frame_rx;
-  frame_colour;
-  frame_material;
-  frame_material_type;
-  frame_height;
-  frame_width;
-  frame_spring_hinge;
-  frame_temple_length;
-  frame_shape_type;
-  frame_shape_height;
-  frame_shape_length;
-  lens_material_type;
-  lens_colour;
-  image_medium_url;
-  delivery_range_index;
-}
+import {Article} from "./Article";
+import {Button} from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import Link from "@material-ui/core/Link";
 
 export default class App extends React.Component {
-
-  /** {Article[]} */
-  articles;
-
-
-  constructor(props) {
-    super(props);
-    this.query = React.createRef();
-    this.state = { db: null, err: null, articles: null }
+  query = React.createRef();
+  state = {
+    db:       null,
+    err:      null,
+    articles: null
   }
 
   componentDidMount() {
-    // sql.js needs to fetch its wasm file, so we cannot immediately instantiate the database
-    // without any configuration, initSqlJs will fetch the wasm files directly from the same path as the js
-    // see ../config-overrides.js
-
     const me = this;
     Promise.all([initSqlJs(), fetch('articles.sqlite')]).then(async res => {
       const SQLite = res[0], dbStorage = res[1];
-      const db = new SQLite.Database(new Uint8Array(await dbStorage.arrayBuffer()));
+      me.setState({
+        db: new SQLite.Database(new Uint8Array(await dbStorage.arrayBuffer()))
+      });
 
-      me.setState({db: db});
-
-      // document.getElementById("App")
-      const sql = me.query.current.value;
-      me.search(sql);
+      me.search("Herren");
 
     }).catch(err => {
       me.setState({err});
     });
-
   }
 
   search(query) {
@@ -127,30 +99,50 @@ export default class App extends React.Component {
     if (!db) return <pre>Loading...</pre>;
     return (
       <div className="App">
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/" onClick={this.handleClick}>
+            Optikfried
+          </Link>
+          <Link color="inherit" href="/getting-started/installation/" onClick={this.handleClick}>
+            Eyewears
+          </Link>
+          <Typography color="textPrimary">Articles</Typography>
+        </Breadcrumbs>
 
-        <h1>Search eyewear</h1>
+        <div style={{height: 10}}/>
 
-        <textarea
+        <TextField
+          id="filled-basic"
+          label="Search"
+          variant="filled"
           onChange={e => this.search(e.target.value)}
           defaultValue="Damen"
           ref={this.query}
+          fullWidth={100}
         />
 
         <pre className="error">{(err || "").toString()}</pre>
 
-        <pre>{articles
-          ? articles.map(article => {
-            return (
-              <div  style={{float:'left', height: 200, width: 200 }}>{article.name}
-                <img width={200} src={article.image_medium_url} alt={article.internal_article_id}/>
-              </div>
-            )
-          })
-          : ""
-        }</pre>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          spacing={1}>
 
-      </div>
-    );
+          {articles ? articles.map(article => {
+            return (<Grid container item xs={2} spacing={3}>
+              {article.name}
+              <img width={200} src={article.image_medium_url} alt={article.internal_article_id}/>
+            </Grid>)
+          }) : ""}
+
+        </Grid>
+
+      </div>);
+  }
+
+  handleClick() {
+
   }
 
 }
