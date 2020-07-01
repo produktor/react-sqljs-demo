@@ -6,6 +6,7 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.query = React.createRef();
     this.state = { db: null, err: null, results: null }
   }
 
@@ -22,6 +23,11 @@ export default class App extends React.Component {
       setTimeout(() => this.search('Damen'))
 
       me.setState({db: db});
+
+      // document.getElementById("App")
+      const sql = me.query.current.value;
+      me.exec(sql);
+
     }).catch(err => {
       me.setState({err});
     });
