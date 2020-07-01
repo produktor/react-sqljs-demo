@@ -1,0 +1,26 @@
+export class Article {
+  internal_article_id;
+  ean_code;
+  company_id;
+  brand;
+  user_group;
+  article_type;
+  line;
+  frame_dbl;
+  frame_rim_type;
+  frame_rx;
+  frame_colour;
+  frame_material;
+  frame_material_type;
+  frame_height;
+  frame_width;
+  frame_spring_hinge;
+  frame_temple_length;
+  frame_shape_type;
+  frame_shape_height;
+  frame_shape_length;
+  lens_material_type;
+  lens_colour;
+  image_medium_url;
+  delivery_range_index;
+}
