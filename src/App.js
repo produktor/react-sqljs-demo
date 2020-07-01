@@ -2,12 +2,43 @@ import React from "react";
 import "./styles.css";
 import initSqlJs from "sql.js";
 
+class Article {
+  internal_article_id;
+  ean_code;
+  company_id;
+  brand;
+  user_group;
+  article_type;
+  line;
+  frame_dbl;
+  frame_rim_type;
+  frame_rx;
+  frame_colour;
+  frame_material;
+  frame_material_type;
+  frame_height;
+  frame_width;
+  frame_spring_hinge;
+  frame_temple_length;
+  frame_shape_type;
+  frame_shape_height;
+  frame_shape_length;
+  lens_material_type;
+  lens_colour;
+  image_medium_url;
+  delivery_range_index;
+}
+
 export default class App extends React.Component {
+
+  /** {Article[]} */
+  articles;
+
 
   constructor(props) {
     super(props);
     this.query = React.createRef();
-    this.state = { db: null, err: null, results: null }
+    this.state = { db: null, err: null, articles: null }
   }
 
   componentDidMount() {
@@ -20,13 +51,11 @@ export default class App extends React.Component {
       const SQLite = res[0], dbStorage = res[1];
       const db = new SQLite.Database(new Uint8Array(await dbStorage.arrayBuffer()));
 
-      setTimeout(() => this.search('Damen'))
-
       me.setState({db: db});
 
       // document.getElementById("App")
       const sql = me.query.current.value;
-      me.exec(sql);
+      me.search(sql);
 
     }).catch(err => {
       me.setState({err});
@@ -35,7 +64,7 @@ export default class App extends React.Component {
   }
 
   search(query) {
-    let results = null, err = null;
+    let results = null, err = null, articles =null;
     const sql = "SELECT t.* FROM db_articles t " +
                 "WHERE internal_article_id LIKE '%"+query+"%' " +
                 "OR ean_code LIKE  '%"+query+"%' " +
@@ -61,48 +90,40 @@ export default class App extends React.Component {
                 + "OR lens_colour LIKE  '%" + query + "%' "
                 // + "OR image_medium_url LIKE  '%" + query + "%' "
                 // + "OR delivery_range_index LIKE  '%" + query + "%' "
-                + "LIMIT 100;  "
+                + "LIMIT 200;  "
 
     try {
       // The sql is executed synchronously on the UI thread. 
       // You may want to use a web worker
       results = this.state.db.exec(sql); // an array of objects is returned
+      const columns = results[0].columns;
+      articles = results[0].values.map(row => {
+        let article = new Article();
+        columns.map( (columnName, i) => {
+          article[columnName] = row[i];
+        })
+        return article;
+      })
+
     } catch (e) {
       // exec throws an error when the SQL statement is invalid
       err = e
     }
-    this.setState({ results, err })
+    this.setState({  err, articles })
   }
 
   /**
    * Renders a single value of the array returned by db.exec(...) as a table
+   * @param {Article} article
    */
-  renderResult({ columns, values }) {
-    return (
-      <table>
-        <thead>
-          <tr>
-            {columns.map(columnName =>
-              <td>{columnName}</td>
-            )}
-          </tr>
-        </thead>
-
-        <tbody>
-          {values.map(row => // values is an array of arrays representing the results of the query
-            <tr>
-              {row.map(value =>
-                <td>{value}</td>
-              )}
-            </tr>
-          )}
-        </tbody>
-      </table>
-    );
+  renderArticle(article) {
+    return (<div>
+        <h1>{article.brand}</h1>
+      </div>);
   }
 
   render() {
-    let { db, err, results } = this.state;
+    let { db, err, articles } = this.state;
     if (!db) return <pre>Loading...</pre>;
     return (
       <div className="App">
@@ -112,12 +133,19 @@ export default class App extends React.Component {
         <textarea
           onChange={e => this.search(e.target.value)}
           defaultValue="Damen"
+          ref={this.query}
         />
 
         <pre className="error">{(err || "").toString()}</pre>
 
-        <pre>{results
-          ? results.map(this.renderResult) // results contains one object per select statement in the query
+        <pre>{articles
+          ? articles.map(article => {
+            return (
+              <div  style={{float:'left', height: 200, width: 200 }}>{article.name}
+                <img width={200} src={article.image_medium_url} alt={article.internal_article_id}/>
+              </div>
+            )
+          })
           : ""
         }</pre>
 
