@@ -68,9 +68,7 @@ export default class App extends React.Component {
       const columns = results[0].columns;
       articles = results[0].values.map(row => {
         let article = new Article();
-        columns.map( (columnName, i) => {
-          article[columnName] = row[i];
-        })
+        columns.map((columnName, i) => article[columnName] = row[i])
         return article;
       })
 
