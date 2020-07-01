@@ -2,15 +2,12 @@ import React from "react";
 import "./styles.css";
 import initSqlJs from "sql.js";
 import {Article} from "./Article";
-import {Button} from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
+import Card from "@material-ui/core/Card";
 
 export default class App extends React.Component {
   query = React.createRef();
@@ -130,9 +127,11 @@ export default class App extends React.Component {
           spacing={1}>
 
           {articles ? articles.map(article => {
-            return (<Grid container item xs={2} spacing={3}>
-              {article.name}
-              <img width={200} src={article.image_medium_url} alt={article.internal_article_id}/>
+            return (<Grid container item xs={3} spacing={3}>
+              <Card>
+                {article.ean_code}<br/>
+                <img width={300} src={article.image_medium_url} alt={article.internal_article_id}/>
+              </Card>
             </Grid>)
           }) : ""}
 
